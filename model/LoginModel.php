@@ -49,4 +49,17 @@ class LoginModel
         }
         return ACCESO_RECHAZADO;
     }
+
+    public function getId($username, $password)
+    {
+        global $usuariosLista;
+        foreach ($usuariosLista as $usuario) {
+            if ($usuario->getPassword() == $password) {
+                if ($usuario->getNombreUsuario() == $username) {
+                    return $usuario->getId();
+                }
+            }
+        }
+        return null;
+    }
 }
