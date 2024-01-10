@@ -21,7 +21,6 @@ class LoginController
 
             $isAuthenticated = $this->model->authenticateUser($usuario, $password);
             if ($isAuthenticated) {
-                // TODO - get other useful session details e.g., classes taught or enrolled upon, marks
                 $this->setSession($usuario, $password);
             } else {
                 $error = "Detalles incorrectas; reintroduzca el usuario y la contraseña.";
@@ -37,8 +36,8 @@ class LoginController
         $_SESSION['is_logged_in'] = 1;
         $rol = $this->model->getRol($usuario, $password);
         $_SESSION['rol'] = $rol;
-
-        ErrorController::unsetError();
+        $id = $this->model->getId($usuario, $password);
+        $_SESSION['id'] = $id;
     }
 
     private function deleteSession()

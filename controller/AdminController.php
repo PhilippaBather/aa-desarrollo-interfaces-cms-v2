@@ -60,8 +60,7 @@ class AdminController
     {
         $input = trim($input);
         $input = stripslashes($input);
-        $input = htmlspecialchars($input);
-        return $input;
+        return htmlspecialchars($input);
     }
 
     private static function getAsignaturas($input)
