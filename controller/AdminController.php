@@ -32,13 +32,16 @@ class AdminController
             "nuevoUsuario" => null
         );
 
-        $data['error'] = self::validarEmail($input['email']);
-        $data['error'] .= self::validarFecha($input['fecha-nac']);
-
         if ($rol == "" || empty($nombre) || empty($apellido) || empty($fechaNac) || empty($email)) {
             $data['error'] = self::$error;
             return $data;
-        } else if (!empty(trim($data['error']))) {
+        }
+
+        $isEmail = self::validarEmail($input['email']);
+        $isFecha = self::validarFecha($input['fecha-nac']);
+        if (empty($isEmail) || empty($isFecha)) {
+            $errorMsg = self::crearMsgStr($isEmail, $isFecha);
+            $data['error'] = self::$error . $errorMsg;
             return $data;
         } else {
             // switch: crearUsuario usa una sentencia switch
@@ -75,35 +78,41 @@ class AdminController
     }
 
 
-    private static function validarEmail($email): ?string
+    private static function validarEmail($email): bool
     {
         if (filter_var($email, FILTER_VALIDATE_EMAIL)){
-            return null;
+            return true;
         } else {
-            return self::$error . " - email inválido.";
+            return false;
         }
     }
 
-    private static function validarFecha($date)
+    private static function validarFecha($date): bool
     {
         $dateArr = explode('-',$date);
         $aa = $dateArr[0];
         $mm = $dateArr[1];
         $dd = $dateArr[2];
 
-        // comprueba si la fecha está válida
-        $isValid = checkdate($mm, $dd, $aa);
+        // comprueba si el formato de la fecha está válida
+        $isFormatoValid = checkdate($mm, $dd, $aa);
 
-        if (!$isValid) {
-            return self::$error . " - fecha inválida.";
+        $isValid = strtotime($date)<strtotime("today");
+
+        return $isValid && $isFormatoValid; // si la fecha está correcta
+    }
+
+    private static function crearMsgStr($isEmail, $isFecha)
+    {
+        // Nota: false bools están cadenas vacias
+        if (empty($isEmail) && empty($isFecha)){
+            return ": email y fecha son inválidos.  Nota: una fecha en el pasado es requerido.";
+        } else if(empty($isEmail)) {
+            return ": email inváido";
+        } else if(empty($isFecha)) {
+            return ": fecha inválido.  Nota: una fecha en el pasado es requerido.";
         }
-
-        // comprueba si la fecha está en el pasado
-        if(strtotime($date)>=strtotime("today")){
-            return self::$error . " - fecha inválida: una fecha en el pasado es requerido.";
-        }
-
-        return null; // si la fecha está correcta
+        return null;
     }
 
 }
