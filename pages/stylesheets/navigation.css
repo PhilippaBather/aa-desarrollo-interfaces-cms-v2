@@ -13,6 +13,14 @@
     align-items: center;
 }
 
+.header_container-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    gap: 1rem;
+}
+
 .company_details-logo-image {
     height: 55px;
     width: 60px;
