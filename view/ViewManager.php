@@ -24,10 +24,9 @@ class ViewManager
     {
         return self::$controller->manejarFormularioEntregado($input);
     }
-
-    public static function reestablecerFormulario()
+    public static function getData()
     {
-        self::$controller->reestablecerFormulario();
+        return self::$controller->getData();
     }
 
 }
