@@ -4,7 +4,7 @@ $data = null;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['crear_usuario'])) {
     $input = $_POST;
-    $data = \view\ViewManager::handleFormSubmission($input);
+    $data = \view\ViewManager::manejarFormularioEntregado($input);
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['despejar_confirmacion'])) {
