@@ -1,5 +1,8 @@
 <?php
 
+namespace model;
+use Estudiante;
+
 /**
  * Post - un mensaje publicado por un objeto Estudiante
  */
@@ -65,12 +68,12 @@ class Post
         self::$contador++;
     }
 
-    public function getUsuario() : mixed
+    public function getUsuario(): mixed
     {
         return $this->usuario;
     }
 
-    public function getTitulo() : string
+    public function getTitulo(): string
     {
         return $this->titulo;
     }
