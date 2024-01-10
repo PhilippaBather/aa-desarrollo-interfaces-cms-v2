@@ -1,8 +1,10 @@
 <?php
 
+$data = null;
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['crear_usuario'])) {
     $input = $_POST;
-    \view\ViewManager::handleFormSubmission($input);
+    $data = \view\ViewManager::handleFormSubmission($input);
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['despejar_confirmacion'])) {
@@ -65,15 +67,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['despejar_confirmacion'
             <button type="submit" name="crear_usuario">Añadir</button>
         </div>
     </form>
-    <?php if (isset($_SESSION['error'])): ?>
-        <p><?= $_SESSION['error']; ?></p>
+    <?php if (!is_null($data) && !is_null($data['error'])): ?>
+        <p><?= $data['error']; ?></p>
     <?php endif; ?>
 </section>
 
 <section>
     <?php
-    if (isset($_SESSION['nuevo_usuario'])):
-        $nuevoUsuario = $_SESSION['nuevo_usuario']
+    if (!is_null($data) && !is_null($data['nuevoUsuario'])):
+        $nuevoUsuario = $data['nuevoUsuario']
         ?>
         <div class="form_container">
             <h1>Usuario Añadido</h1>

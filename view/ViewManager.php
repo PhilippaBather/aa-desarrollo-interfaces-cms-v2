@@ -15,19 +15,19 @@ class ViewManager
     }
 
 
-    public function renderView()
+    public function pintarView()
     {
         return require($this->view);
     }
 
-    public static function handleFormSubmission($input)
+    public static function manejarFormularioEntregado($input)
     {
-        self::$controller->handleFormSubmission($input);
+        return self::$controller->manejarFormularioEntregado($input);
     }
 
-    public static function resetForm()
+    public static function reestablecerFormulario()
     {
-        self::$controller->resetForm();
+        self::$controller->reestablecerFormulario();
     }
 
 }

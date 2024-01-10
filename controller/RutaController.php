@@ -13,7 +13,7 @@ class RutaController
     {
     }
 
-    public function checkAuthentication(): ViewManager
+    public function comprobarAutenticacion(): ViewManager
     {
         $controller = new LoginController();
         $controller->comprobarAutenticacion();
