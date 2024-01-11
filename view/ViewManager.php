@@ -20,9 +20,14 @@ class ViewManager
         return require($this->view);
     }
 
-    public static function manejarFormularioEntregado($input)
+    public static function manejarFormulario($input)
     {
         return self::$controller->manejarFormularioEntregado($input);
+    }
+
+    public static function manejarEmail($input)
+    {
+        return self::$controller->manejarEmail($input);
     }
     public static function getData()
     {
