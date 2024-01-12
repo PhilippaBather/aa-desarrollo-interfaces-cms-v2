@@ -1,0 +1,43 @@
+.header_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    margin: 0 1rem 0 1rem;
+    border-bottom: 2px solid black;
+}
+
+.header_container-company-details {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.header_container-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    gap: 1rem;
+}
+
+.company_details-logo-image {
+    height: 55px;
+    width: 60px;
+    margin-right: 1rem;
+}
+
+.header_container-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.nav_item-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 2rem;
+}
