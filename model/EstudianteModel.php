@@ -15,11 +15,4 @@ class EstudianteModel
         return $posts;
     }
 
-    public static function updatePosts($newPost)
-    {
-        $posts = self::getPosts();
-        $posts[] = $newPost;
-        return $posts;
-    }
-
 }

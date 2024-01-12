@@ -24,6 +24,7 @@ class LoginController
                 $this->setSession($usuario, $password);
             } else {
                 $error = "Detalles incorrectas; reintroduzca el usuario y la contraseña.";
+                // TODO - return this as data to the view as with Admin and Student controllers
                 ErrorController::setError($error);
             }
         } else if (isset($_POST['logout'])) {

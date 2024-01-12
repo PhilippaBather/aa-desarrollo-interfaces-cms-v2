@@ -2,6 +2,7 @@
 
 namespace controller;
 
+use exceptions\EmailException;
 use model\EstudianteModel;
 use model\Post;
 use model\Usuarios;
@@ -9,9 +10,11 @@ use model\Usuarios;
 class EstudianteController
 {
     private static $error = "Título y contenido requeridos.";
+
     public function __construct()
     {
     }
+
     public static function manejarFormularioEntregado($input)
     {
         $postTipo = self::limpiarData($input['post-tipo']) ?? "";
@@ -37,6 +40,34 @@ class EstudianteController
             $data['error'] = self::$error;
             return $data;
         }
+    }
+
+    public static function manejarEmail($input)
+    {
+        $to = $input['destinatario'];
+        $subject = $input['asunto'];
+        $msg = $input['mensaje'];
+
+        $headers = 'From: pabdevtest@gmail.com' . "\r\n" .
+            'Reply-To: pabdevtest@gmail.com' . "\r\n" .
+            'X-Mailer: PHP/' . phpversion();
+
+        $data = [
+            'error' => null,
+        ];
+
+        // intentar enviar el correo
+        try {
+            if (!mail($to, $subject, $msg, $headers)) {
+                throw new EmailException("Error al enviar correo.");
+            }
+        } catch (EmailException $ex) {
+            $data['error'] = $ex->getMessage();
+        } catch (\Exception $ex) {
+            $data['error'] = $ex->getMessage();
+        }
+
+        return $data;
     }
 
     public static function getData()
