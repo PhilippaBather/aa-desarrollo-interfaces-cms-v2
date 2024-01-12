@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['enviar_correo'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/pages/stylesheets/main.css">
     <link rel="stylesheet" type="text/css" href="/pages/stylesheets/navigation.css">
     <link rel="stylesheet" type="text/css" href="/pages/stylesheets/modal.css">
@@ -79,14 +79,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['enviar_correo'])) {
     ?>
 
 <main>
-    <h1>Estudiante Dashboard</h1>
+    <h1 class="dashboard_title">Estudiante Dashboard</h1>
+
+    <?php if (!isset($_POST['email']) || empty($emailError)): ?>
 
     <section class="form_container">
 
         <?php require "estudiante-post-form.php";
 
         if (!is_null($postError)): ?>
-            <p><?= $postError; ?></p>
+            <p class="error-msg"><?= $postError; ?></p>
 
         <?php endif; ?>
 
@@ -103,6 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['enviar_correo'])) {
         <?php endforeach; ?>
 
     </section>
+    <?php endif; ?>
 </main>
 </body>
 </html>

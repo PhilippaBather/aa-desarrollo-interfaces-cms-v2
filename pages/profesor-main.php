@@ -1,12 +1,13 @@
 <?php
 
 use model\Cursos;
-use view\ProfessorView;
+use view\ProfesorView;
 
 $curso = Cursos::getCursoPorCodigo(CODE_ADVANCED_C1);
 $estudiantes = $curso->getEstudiantes();
+$data = null;
 
-$profView = new ProfessorView();
+$profView = new ProfesorView();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_notas'])) {
     $input = $_POST;
@@ -19,17 +20,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_notas'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/pages/stylesheets/main.css">
     <link rel="stylesheet" type="text/css" href="/pages/stylesheets/navigation.css">
-    <link rel="stylesheet" type="text/css" href="/pages/stylesheets/login.css">
     <title>Education CMS</title>
 </head>
 <?php
 require "header.php";
 ?>
 
-<h1>Profesor Dashboard</h1>
+<h1 class="dashboard_title">Profesor Dashboard</h1>
 
 <section class="marks_container">
     <h1><?= $curso->getNombre(); ?></h1>
@@ -69,6 +69,10 @@ require "header.php";
         </table>
     <?php endif; ?>
 </section>
+<?php
+if (!is_null($data) && isset($data['error'])): ?>
+    <p class="error-msg"><?= $data['error']; ?></p>
+<?php endif; ?>
 <?php
 require "profesor-form-notas.php";
 ?>
