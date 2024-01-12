@@ -24,19 +24,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['despejar_confirmacion'
             <input id="profesor" name="rol" value="profesor" type="radio" onchange="handleRoleSelection(this.id)"/>
             <label for="profesor">Profesor</label>
         </div>
-        <div>
-            <label for="nombre">Nombre</label>
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
             <input id="nombre" name="nombre">
         </div>
-        <div>
+        <div class="form-group">
             <label for="apellidos">Apellidos</label>
             <input id="apellidos" name="apellidos">
         </div>
-        <div>
+        <div class="form-group">
             <label for="fecha-nac">Fecha de nacimiento</label>
             <input id="fecha-nac" name="fecha-nac" type="date">
         </div>
-        <div>
+        <div class="form-group">
             <label for="email">Email</label>
             <input id="email" name="email"/>
         </div>
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['despejar_confirmacion'
         </div>
     </form>
     <?php if (!is_null($data) && !is_null($data['error'])): ?>
-        <p><?= $data['error']; ?></p>
+        <p class="error-msg"><?= $data['error']; ?></p>
     <?php endif; ?>
 </section>
 

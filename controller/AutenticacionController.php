@@ -3,10 +3,11 @@
 namespace controller;
 
 use model\LoginModel;
+use utiles\Utiles;
 use view\AdminView;
 use view\EstudianteView;
 use view\LoginView;
-use view\ProfessorView;
+use view\ProfesorView;
 
 /**
  * AutenticacionController - dirige la autenticación de un usuario cuando accede a la aplicación y la ruta que
@@ -20,11 +21,11 @@ class AutenticacionController
         $this->loginModel = new LoginModel();
     }
 
-    public function comprobarAutenticacion(): EstudianteView|ProfessorView|AdminView|LoginView
+    public function comprobarAutenticacion(): EstudianteView|ProfesorView|AdminView|LoginView
     {
         if (isset($_POST['login_submit'])) {
-            $usuario = $_POST['username'];
-            $password = $_POST['password'];
+            $usuario = Utiles::limpiarData($_POST['username']);
+            $password = Utiles::limpiarData($_POST['password']);
 
             $isAuthenticated = $this->loginModel->authenticateUser($usuario, $password);
             if ($isAuthenticated) {
@@ -32,7 +33,6 @@ class AutenticacionController
                 LoginErrorController::unsetError();
             } else {
                 $error = "Detalles incorrectas; reintroduzca el usuario y la contraseña.";
-                // TODO - return this as data to the view as with Admin and Student controllers
                 LoginErrorController::setError($error);
             }
         } else if (isset($_POST['logout'])) {
@@ -57,7 +57,7 @@ class AutenticacionController
         session_destroy(); // elimina todos datos de la sesión
     }
 
-    public function manejarRuta(): EstudianteView|ProfessorView|AdminView|LoginView
+    public function manejarRuta(): EstudianteView|ProfesorView|AdminView|LoginView
     {
         if (isset($_SESSION['is_logged_in'])) {
             if ($_SESSION['is_logged_in'] == 1) {
@@ -65,7 +65,7 @@ class AutenticacionController
                     ACCESO_RECHAZADO => new LoginView(),
                     ADMIN => new AdminView(),
                     ESTUDIANTE => new EstudianteView(),
-                    PROFESOR => new ProfessorView()
+                    PROFESOR => new ProfesorView()
                 };
             }
         }

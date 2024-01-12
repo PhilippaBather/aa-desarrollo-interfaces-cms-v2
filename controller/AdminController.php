@@ -2,14 +2,17 @@
 
 namespace controller;
 
+use exceptions\ValidationException;
 use model\Curso;
 use model\Usuarios;
+use utiles\Utiles;
 
 class AdminController
 {
 
     private static string $error = "Detalles incompletas";
     private array $data;
+
     public function __construct()
     {
         $this->data = array(
@@ -22,48 +25,45 @@ class AdminController
     {
         // si el botón de radio no está chequeado, no hay un valor, entonces, asigna una cadena vacía
         $rol = $input["rol"] ?? ""; // null coalescing operator (??); forma más corto del ternary: $rol = $_POST["rol"] ? $_POST["rol"] : "";
-        $nombre = self::limpiarData($input["nombre"]);
-        $apellido = self::limpiarData($input["apellidos"]);
-        $fechaNac = self::limpiarData($input["fecha-nac"]);
-        $email = self::limpiarData($input["email"]);
-        $asignaturas = self::getAsignaturas($input);
+        $nombre = Utiles::limpiarData($input["nombre"]);
+        $apellido = Utiles::limpiarData($input["apellidos"]);
+        $fechaNac = Utiles::limpiarData($input["fecha-nac"]);
+        $email = Utiles::limpiarData($input["email"]);
+        $asignaturas = $this->getAsignaturas($input);
         $sueldo = $input["sueldo"] ?? "0.0"; // si hay valor, asignalo; si no, asigna una cadena vacía
 
         // crea usuario:
 
-        if ($rol == "" || empty($nombre) || empty($apellido) || empty($fechaNac) || empty($email)) {
-            $this->data['error'] = self::$error;
-            return $this->data;
-        }
+        try {
+            if ($rol == "" || empty($nombre) || empty($apellido) || empty($fechaNac) || empty($email)) {
+                throw new ValidationException(self::$error);
+            }
 
-        $isEmail = self::validarEmail($input['email']);
-        $isFecha = self::validarFecha($input['fecha-nac']);
+            $isEmail = Utiles::validarEmail($input['email']);
+            $isFecha = Utiles::validarFecha($input['fecha-nac']);
+            if (empty($isEmail) || empty($isFecha)) {
+                $errorMsg = self::crearMsgStr($isEmail, $isFecha);
+                $this->data['error'] = self::$error . $errorMsg;
+                throw new ValidationException(self::$error . $errorMsg);
+            }
 
-        if (empty($isEmail) || empty($isFecha)) {
-            $errorMsg = self::crearMsgStr($isEmail, $isFecha);
-            $this->data['error'] = self::$error . $errorMsg;
-            return $this->data;
-        } else {
-            // switch: crearUsuario usa una sentencia switch
             $nuevoUsuario = Usuarios::crearUsuario($rol, $nombre, $apellido, $fechaNac, $email, $asignaturas, $sueldo);
             $this->data['nuevo_usuario'] = $nuevoUsuario;
+
+        } catch (ValidationException $e) {
+            $this->data['error'] = $e->getMessage();
             return $this->data;
         }
+
+        return $this->data;
     }
 
-    private function limpiarData($input)
-    {
-        $input = trim($input);
-        $input = stripslashes($input);
-        return htmlspecialchars($input);
-    }
-
-    private function getAsignaturas($input)
+    private function getAsignaturas($input): array
     {
         $asignaturas = array();
         if (isset($input["asignaturas"])) {
             foreach ($_POST["asignaturas"] as $asignatura) {
-                $asig = self::limpiarData($asignatura);
+                $asig = Utiles::limpiarData($asignatura);
                 $asignaturaCreada = Curso::crearCurso($asig);
                 $asignaturas[] = $asignaturaCreada;
             }
@@ -71,38 +71,14 @@ class AdminController
         return $asignaturas;
     }
 
-    private function validarEmail($email): bool
-    {
-        if (filter_var($email, FILTER_VALIDATE_EMAIL)){
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private function validarFecha($date): bool
-    {
-        $dateArr = explode('-',$date);
-        $aa = $dateArr[0];
-        $mm = $dateArr[1];
-        $dd = $dateArr[2];
-
-        // comprueba si el formato de la fecha está válida
-        $isFormatoValid = checkdate($mm, $dd, $aa);
-
-        $isValid = strtotime($date)<strtotime("today");
-
-        return $isValid && $isFormatoValid; // si la fecha está correcta
-    }
-
-    private function crearMsgStr($isEmail, $isFecha)
+    private function crearMsgStr($isEmail, $isFecha): ?string
     {
         // Nota: false bools están cadenas vacias
-        if (empty($isEmail) && empty($isFecha)){
+        if (empty($isEmail) && empty($isFecha)) {
             return ": email y fecha son inválidos.  Nota: una fecha en el pasado es requerido.";
-        } else if(empty($isEmail)) {
+        } else if (empty($isEmail)) {
             return ": email inválido";
-        } else if(empty($isFecha)) {
+        } else if (empty($isFecha)) {
             return ": fecha inválido.  Nota: una fecha en el pasado es requerido.";
         }
         return null;

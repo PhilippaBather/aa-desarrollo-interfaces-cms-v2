@@ -2,7 +2,10 @@
 
 namespace controller;
 
+use exceptions\ValidationException;
 use model\ProfesorModel;
+use model\UEstudiante;
+use utiles\Utiles;
 
 class ProfesorController
 {
@@ -16,39 +19,47 @@ class ProfesorController
         $this->profModel = new ProfesorModel();
     }
 
-    public function manejarFormulario($input): void
+    public function manejarFormulario($input)
     {
-        // null coalescing operador (??): forma más corto del operador ternary introducido en PHP 7
-        $estudiante_id = $input['estudiante-id'] ?? 0;
-        $lectura = $input['lectura'] ?? 0;
-        $escritura = $input['escritura'] ?? 0;
-        $oral = $input['oral'] ?? 0;
-        $auditiva = $input['auditiva'] ?? 0;
+        $estudiante_id = Utiles::limpiarData($input['estudiante-id']);
+        $lectura = Utiles::limpiarData($input['lectura']);
+        $escritura = Utiles::limpiarData($input['escritura']);
+        $oral = Utiles::limpiarData($input['oral']);
+        $auditiva = Utiles::limpiarData($input['auditiva']);
         $cod_curso = $input['cod_curso'];
 
-        // TODO - validation and exceptions
+        try {
 
-        // obtener estudiante
-        $estudiante = $this->getData($cod_curso, $estudiante_id);
+            $estudiante = $this->getData($cod_curso, $estudiante_id);
+            if (is_null($estudiante)) {
+                throw new ValidationException("la ID del estudiante es inválida");
+            }
 
-        // establecer las notas
-        $this->setNotas($estudiante, $lectura, $escritura, $oral, $auditiva);
+            $nums = [$estudiante_id, $lectura, $escritura, $oral, $auditiva];
+            if (empty(Utiles::validarNumeros($nums)) || empty(Utiles::validarRango($nums))) {
+                throw new ValidationException("introduzca números entre 0 - 10 para las notas.");
+            }
+
+            // si estduiante existe, establece las notas
+            $this->setNotas($estudiante, $lectura, $escritura, $oral, $auditiva);
+
+        } catch (ValidationException $e) {
+            $this->data['error'] = $e->getValidationExceptionMessage();
+        }
+
+        return $this->data;
 
     }
 
-    private function getData($cod_curso, $estudiante_id): ?\model\UEstudiante
+    private function getData($cod_curso, $estudiante_id): ?UEstudiante
     {
         return $this->profModel->getEstudiante($cod_curso, $estudiante_id);
     }
 
     private function setNotas($estudiante, $lectura, $escritura, $oral, $auditiva): void
     {
-        if (!is_null($estudiante)) {
-            $estudiante->setNotas($lectura, $escritura, $oral, $auditiva);
-            $estudiante->setPromedio();
-        } else {
-            // TODO - segunda entrega: excepciones
-        }
+        $estudiante->setNotas($lectura, $escritura, $oral, $auditiva);
+        $estudiante->setPromedio();
     }
 
 

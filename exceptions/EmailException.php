@@ -4,9 +4,9 @@ namespace exceptions;
 
 class EmailException extends \Exception
 {
-    public function getMensaje()
+    public function getEmailExceptionMessage()
     {
-        return "EmailException Error: " . $this->getMessage();
+        return "Error de correo: " . $this->getMessage();
     }
 
 }

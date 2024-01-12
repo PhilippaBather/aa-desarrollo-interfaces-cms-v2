@@ -8,12 +8,12 @@
         </select>
 
     </div>
-    <div>
+    <div class="form-group">
         <label for="titulo">Título</label>
         <input id="titulo" name="titulo">
     </div>
-    <div>
-        <label for="contenido"></label>
+    <div class="form-group">
+        <label for="contenido">Contenido</label>
         <textarea id="contenido" name="contenido" rows="4" cols="40"
                   placeholder="Escribe el post aquí"></textarea>
     </div>
