@@ -48,8 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['enviar_correo'])) {
         <form class="modal-form" method="post" name="enviar_email">
             <div class="modal-form_container">
                 <h2 class="form-title">Enviar Correo</h2>
-                <?php if(!is_null($emailError)): ?>
-                <p><?=$emailError; ?></p>
+                <?php if (!is_null($emailError)): ?>
+                    <p><?= $emailError; ?></p>
                 <?php endif; ?>
                 <div class="modal-form_group">
                     <label for="destinatario">Destinatario:</label>
@@ -74,14 +74,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['enviar_correo'])) {
     </div>
     </div>
 <?php endif; ?>
-    <?php
-    require "header.php";
-    ?>
+<?php
+require "header.php";
+?>
 
 <main>
     <h1 class="dashboard_title">Estudiante Dashboard</h1>
 
-    <?php if (!isset($_POST['email']) || empty($emailError)): ?>
 
     <section class="form_container">
 
@@ -105,7 +104,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['enviar_correo'])) {
         <?php endforeach; ?>
 
     </section>
-    <?php endif; ?>
 </main>
 </body>
 </html>
