@@ -4,11 +4,11 @@ namespace view;
 
 use controller\ProfesorController;
 
-class ProfessorView
+class ProfesorView
 {
 
-    private $view;
-    private $profController;
+    private string $view;
+    private ProfesorController $profController;
 
     public function __construct()
     {
@@ -21,7 +21,7 @@ class ProfessorView
         return require($this->view);
     }
 
-    public function manejarFormulario($input)
+    public function manejarFormulario($input): array
     {
         return $this->profController->manejarFormulario($input);
     }
