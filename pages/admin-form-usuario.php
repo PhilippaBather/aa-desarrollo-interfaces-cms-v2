@@ -3,8 +3,8 @@
 $data = null;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['crear_usuario'])) {
-    $input = $_POST;
-    $data = \view\ViewManager::manejarFormulario($input);
+    $adminView = new \view\AdminView();
+    $data = $adminView->manejarFormulario($_POST);
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['despejar_confirmacion'])) {
@@ -74,8 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['despejar_confirmacion'
 
 <section>
     <?php
-    if (!is_null($data) && !is_null($data['nuevoUsuario'])):
-        $nuevoUsuario = $data['nuevoUsuario']
+    if (!is_null($data) && isset($data['nuevo_usuario'])):
+        $nuevoUsuario = $data['nuevo_usuario']
         ?>
         <div class="form_container">
             <h1>Usuario Añadido</h1>

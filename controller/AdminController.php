@@ -8,14 +8,18 @@ use model\Usuarios;
 class AdminController
 {
 
-    private static $error = "Detalles incompletas";
+    private static string $error = "Detalles incompletas";
+    private array $data;
     public function __construct()
     {
+        $this->data = array(
+            "error" => null,
+            "nuevoUsuario" => null
+        );
     }
 
-    public static function manejarFormularioEntregado($input)
+    public function manejarFormularioEntregado($input): array
     {
-
         // si el botón de radio no está chequeado, no hay un valor, entonces, asigna una cadena vacía
         $rol = $input["rol"] ?? ""; // null coalescing operator (??); forma más corto del ternary: $rol = $_POST["rol"] ? $_POST["rol"] : "";
         $nombre = self::limpiarData($input["nombre"]);
@@ -27,43 +31,34 @@ class AdminController
 
         // crea usuario:
 
-        $data = array(
-            "error" => null,
-            "nuevoUsuario" => null
-        );
-
         if ($rol == "" || empty($nombre) || empty($apellido) || empty($fechaNac) || empty($email)) {
-            $data['error'] = self::$error;
-            return $data;
+            $this->data['error'] = self::$error;
+            return $this->data;
         }
 
         $isEmail = self::validarEmail($input['email']);
         $isFecha = self::validarFecha($input['fecha-nac']);
+
         if (empty($isEmail) || empty($isFecha)) {
             $errorMsg = self::crearMsgStr($isEmail, $isFecha);
-            $data['error'] = self::$error . $errorMsg;
-            return $data;
+            $this->data['error'] = self::$error . $errorMsg;
+            return $this->data;
         } else {
             // switch: crearUsuario usa una sentencia switch
             $nuevoUsuario = Usuarios::crearUsuario($rol, $nombre, $apellido, $fechaNac, $email, $asignaturas, $sueldo);
-            $data['nuevoUsuario'] = $nuevoUsuario;
-            return $data;
+            $this->data['nuevo_usuario'] = $nuevoUsuario;
+            return $this->data;
         }
     }
 
-    public static function reestablecerFormulario()
-    {
-        Usuarios::unsetUsuario();
-    }
-
-    private static function limpiarData($input)
+    private function limpiarData($input)
     {
         $input = trim($input);
         $input = stripslashes($input);
         return htmlspecialchars($input);
     }
 
-    private static function getAsignaturas($input)
+    private function getAsignaturas($input)
     {
         $asignaturas = array();
         if (isset($input["asignaturas"])) {
@@ -76,8 +71,7 @@ class AdminController
         return $asignaturas;
     }
 
-
-    private static function validarEmail($email): bool
+    private function validarEmail($email): bool
     {
         if (filter_var($email, FILTER_VALIDATE_EMAIL)){
             return true;
@@ -86,7 +80,7 @@ class AdminController
         }
     }
 
-    private static function validarFecha($date): bool
+    private function validarFecha($date): bool
     {
         $dateArr = explode('-',$date);
         $aa = $dateArr[0];
@@ -101,13 +95,13 @@ class AdminController
         return $isValid && $isFormatoValid; // si la fecha está correcta
     }
 
-    private static function crearMsgStr($isEmail, $isFecha)
+    private function crearMsgStr($isEmail, $isFecha)
     {
         // Nota: false bools están cadenas vacias
         if (empty($isEmail) && empty($isFecha)){
             return ": email y fecha son inválidos.  Nota: una fecha en el pasado es requerido.";
         } else if(empty($isEmail)) {
-            return ": email inváido";
+            return ": email inválido";
         } else if(empty($isFecha)) {
             return ": fecha inválido.  Nota: una fecha en el pasado es requerido.";
         }
