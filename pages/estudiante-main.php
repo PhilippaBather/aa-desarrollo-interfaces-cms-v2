@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['enviar_correo'])) {
 </head>
 <body>
 <?php if (isset($_POST['email']) || $emailError): ?>
-    <div class="model_overlay" id="modal_overlay"></div>
+    <div class="modal_backdrop" id="modal_backdrop"></div>
     <div class="modal_container" id="modal_container">
         <form class="modal-form" method="post" name="enviar_email">
             <div class="modal-form_container">
@@ -71,7 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['enviar_correo'])) {
         <form class="modal-form" method="post" name="cerrar_email">
             <button type="submit" name="cerrar_correo" id="btn_cancelar">Cancelar</button>
         </form>
-    </div>
     </div>
 <?php endif; ?>
 <?php
