@@ -2,6 +2,9 @@
 
 namespace utiles;
 
+/**
+ * Utiles - la clase contiene funciones para validar la entrada de formularios.
+ */
 class Utiles
 {
 
@@ -46,6 +49,20 @@ class Utiles
         return true;
     }
 
+    public static function validarNumero($num) : bool
+    {
+        if (!filter_var($num, FILTER_VALIDATE_INT)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Comprueba si las notas dadas al alumno son válidas y, entonces,
+     * entre 0 - 10.
+     * @param $nums notas entradas
+     * @return bool si está en el rango
+     */
     public static function validarRango($nums): bool
     {
         foreach ($nums as $num) {
