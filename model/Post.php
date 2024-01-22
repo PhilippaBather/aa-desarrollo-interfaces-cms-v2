@@ -1,7 +1,8 @@
 <?php
 
 namespace model;
-use Estudiante;
+
+use DateTime;
 
 /**
  * Post - un mensaje publicado por un objeto Estudiante
@@ -22,7 +23,7 @@ class Post
 
     /**
      * Dueño del mensaje
-     * @var Estudiante
+     * @var UEstudiante
      */
     private $usuario;
 

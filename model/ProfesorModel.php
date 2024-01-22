@@ -2,6 +2,9 @@
 
 namespace model;
 
+/**
+ * ProfesorModel - obtiene datos relevante al profesor de las globales (representando un base de datos).
+ */
 class ProfesorModel
 {
     public function __construct()

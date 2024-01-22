@@ -2,8 +2,6 @@
 
 namespace model;
 
-//require "./constantes/cursos.php";
-
 /**
  * Curso - el curso enseñado o inscrito
  */
