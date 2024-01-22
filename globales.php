@@ -9,6 +9,10 @@ use model\UProfesor;
 require "./model/constantes/cursos.php";
 require "./model/constantes/roles.php";
 
+/**
+ * Globales - variables globales para representar datos de un base de datos.
+ */
+
 $usuarioAdmin = new UAdmin(ADMIN, "Iñaki", "Garcia", "dob",
     "inaki_garcia@educ.es", 27000.00);
 $usuarioProfesor = new UProfesor(PROFESOR, "Andy", "MacDonald", "dob",
