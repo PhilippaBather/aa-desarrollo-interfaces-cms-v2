@@ -2,6 +2,9 @@
 
 namespace controller;
 
+/**
+ * LoginErrorController - el controlador para manejar errores de autenticación
+ */
 class LoginErrorController
 {
     public static function setError($error): void

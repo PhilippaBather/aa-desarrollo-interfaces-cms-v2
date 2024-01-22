@@ -8,6 +8,10 @@ use model\Post;
 use model\Usuarios;
 use utiles\Utiles;
 
+/**
+ * EstudianteController - el controlador para manejar, procesar y validar la entrada de los formularios de la vista
+ * de Estudiantes.
+ */
 class EstudianteController
 {
     private static string $error = "Título y contenido requeridos.";
@@ -33,7 +37,7 @@ class EstudianteController
         $estudianteId = $_SESSION['id'];
 
         try {
-            if (!empty($titulo) || !empty($contenido)) {
+            if (strlen($titulo) != 0 && strlen($contenido) != 0) {
                 $estudiante = Usuarios::getUsuarioPorId($estudianteId);
                 $newPost = new Post($estudiante->getNombreUsuario(), $titulo, $contenido, $fecha, $postTipo);
                 $this->data['nuevo_post'] = $newPost;

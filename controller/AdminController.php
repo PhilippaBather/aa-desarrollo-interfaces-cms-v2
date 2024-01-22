@@ -7,6 +7,9 @@ use model\Curso;
 use model\Usuarios;
 use utiles\Utiles;
 
+/**
+ * AdminController - el controlador para procesar y validar la entrada de los formularios la vista de Admin.
+ */
 class AdminController
 {
 
@@ -30,7 +33,7 @@ class AdminController
         $fechaNac = Utiles::limpiarData($input["fecha-nac"]);
         $email = Utiles::limpiarData($input["email"]);
         $asignaturas = $this->getAsignaturas($input);
-        $sueldo = $input["sueldo"] ?? "0.0"; // si hay valor, asignalo; si no, asigna una cadena vacía
+        $sueldo = $input["sueldo"] ?? "0.0"; // si hay valor, asígnalo; si no, asigna "0.0"
 
         // crea usuario:
 
@@ -43,8 +46,11 @@ class AdminController
             $isFecha = Utiles::validarFecha($input['fecha-nac']);
             if (empty($isEmail) || empty($isFecha)) {
                 $errorMsg = self::crearMsgStr($isEmail, $isFecha);
-                $this->data['error'] = self::$error . $errorMsg;
                 throw new ValidationException(self::$error . $errorMsg);
+            }
+            $isSueldo = Utiles::validarNumero($sueldo);
+            if (empty($isSueldo)) {
+                throw new ValidationException(self::$error . ": sueldo inválido");
             }
 
             $nuevoUsuario = Usuarios::crearUsuario($rol, $nombre, $apellido, $fechaNac, $email, $asignaturas, $sueldo);

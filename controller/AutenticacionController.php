@@ -36,7 +36,7 @@ class AutenticacionController
                 LoginErrorController::setError($error);
             }
         } else if (isset($_POST['logout'])) {
-            $this->deleteSession();
+            $this->destroySession();
         }
 
         return $this->manejarRuta();
@@ -51,7 +51,7 @@ class AutenticacionController
         $_SESSION['id'] = $id;
     }
 
-    private function deleteSession(): void
+    private function destroySession(): void
     {
         $_SESSION = array(); // vacia la matriz de datos de la sesión
         session_destroy(); // elimina todos datos de la sesión

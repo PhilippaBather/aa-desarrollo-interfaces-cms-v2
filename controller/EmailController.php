@@ -4,6 +4,9 @@ namespace controller;
 
 use exceptions\EmailException;
 
+/**
+ * EmailController - dirige el envío de correos
+ */
 class EmailController
 {
     private array $data;

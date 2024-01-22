@@ -7,6 +7,10 @@ use model\ProfesorModel;
 use model\UEstudiante;
 use utiles\Utiles;
 
+/**
+ * ProfesorController - el controlador para manejar, procesar y validar la entrada y 'output' de los formularios de
+ * la vista de Profesor.
+ */
 class ProfesorController
 {
 
