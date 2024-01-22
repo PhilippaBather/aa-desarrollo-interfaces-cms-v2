@@ -2,8 +2,9 @@
 
 namespace view;
 
-use controller\AutenticacionController;
-
+/**
+ * LoginView - dirige la vista de login/autenticación
+ */
 class LoginView
 {
 

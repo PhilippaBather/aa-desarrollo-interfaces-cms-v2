@@ -4,6 +4,9 @@ namespace view;
 
 use controller\AdminController;
 
+/**
+ * AdminView - dirige la vista de administración.
+ */
 class AdminView
 {
 
@@ -27,8 +30,4 @@ class AdminView
         return $this->controller->manejarFormularioEntregado($input);
     }
 
-//    public function getData()
-//    {
-//        return $this->controller->getData();
-//    }
 }

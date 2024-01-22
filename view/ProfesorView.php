@@ -4,6 +4,9 @@ namespace view;
 
 use controller\ProfesorController;
 
+/**
+ * ProfesorView - dirige la vista de profesores
+ */
 class ProfesorView
 {
 

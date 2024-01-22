@@ -5,6 +5,9 @@ namespace view;
 use controller\EmailController;
 use controller\EstudianteController;
 
+/**
+ * EstudianteView - dirige la vista de estudiantes.
+ */
 class EstudianteView
 {
 
